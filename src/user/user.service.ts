@@ -30,6 +30,15 @@ export class UserService {
         return user;
     }
 
+    async getUserByIdUsingRelations(userId: number): Promise<UserEntity>{
+        return this.userRepository.findOne({
+            where: {
+                id: userId,
+            },
+            relations: ['addresses'],
+        });
+    }
+
     async createUser(createUserDto: CreateUserDto): Promise<UserEntity>{
         const saltOrRounds = 10;
 
