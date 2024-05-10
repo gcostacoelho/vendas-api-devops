@@ -1,0 +1,10 @@
+FROM postgres
+
+ENV POSTGRES_PASSWORD=*Senha*
+
+ENV POSTGRES_DB=vendas
+
+EXPOSE 5432
+
+#Comando para subir container
+#docker run --name postgres-db-vendas -p 5432:5432 -d postgres-vendas
