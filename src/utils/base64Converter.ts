@@ -1,4 +1,4 @@
-import { LoginPaylod } from "src/auth/dtos/loginPayload.dto"
+import { LoginPaylod } from "../auth/dtos/loginPayload.dto"
 
 
 export const stringJwtToLoginPayload = (authorization: string): LoginPaylod | undefined => {
