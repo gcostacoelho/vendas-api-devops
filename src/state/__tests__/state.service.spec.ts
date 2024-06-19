@@ -3,7 +3,7 @@ import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { StateService } from '../state.service';
 import { StateEntity } from '../entities/state.entity';
-import { StateMock } from '../__mocks__/state.mock';
+import { stateMock } from '../__mocks__/state.mock';
 
 describe('StateService', () => {
   let service: StateService;  
@@ -16,7 +16,7 @@ describe('StateService', () => {
         {
           provide: getRepositoryToken(StateEntity),
           useValue: {
-            find: jest.fn().mockResolvedValue([StateMock]),
+            find: jest.fn().mockResolvedValue([stateMock]),
           }
         }
       ],
@@ -34,7 +34,7 @@ describe('StateService', () => {
   it('should return list of states', async () => {
     const states = await service.getAllState();
 
-    expect(states).toEqual([StateMock]);
+    expect(states).toEqual([stateMock]);
   });
 
   it('should return error in exception', async () => {

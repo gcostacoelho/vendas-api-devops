@@ -1,6 +1,6 @@
 import { StateEntity } from "../entities/state.entity";
 
-export const StateMock: StateEntity = {
+export const stateMock: StateEntity = {
     createdAt: new Date(),
     id: 1522,
     uf: "SP",
