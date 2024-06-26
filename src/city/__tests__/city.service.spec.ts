@@ -14,11 +14,10 @@ describe('CityService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CityService,
-        CacheService,
         {
           provide: CacheService,
           useValue: {
-            getCache: jest.fn().mockRejectedValue([cityMock]),
+            getCache: jest.fn().mockResolvedValue([cityMock]),
           }
         },
         {
