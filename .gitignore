@@ -41,3 +41,4 @@ Dockerfile
 .env.development.local
 
 .vscode
+comando.txt
