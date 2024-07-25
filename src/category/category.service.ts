@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoryEntity } from './entities/categoty.entity';
 import { Repository } from 'typeorm';
+import { CreateCategoryDto } from './dtos/createCategory.dto';
 
 
 @Injectable()
@@ -19,5 +20,11 @@ export class CategoryService {
         }
 
         return categories;
+    }
+
+    async createCategory(createCategory: CreateCategoryDto): Promise<CategoryEntity> {
+        const category = await this.categoryRepository.save(createCategory);
+
+        return category;
     }
 }
