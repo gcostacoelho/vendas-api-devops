@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { StateEntity } from './entities/state.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -8,9 +8,14 @@ export class StateService {
     constructor(
         @InjectRepository(StateEntity)
         private readonly stateRepository: Repository<StateEntity>,
-    ){}
+    ) { }
 
-    async getAllState(): Promise<StateEntity[]>{
-        return await this.stateRepository.find();
+    async getAllState(): Promise<StateEntity[]> {
+        try {
+            return await this.stateRepository.find();
+        } catch (error) {
+            throw new InternalServerErrorException(error);
+        }
+
     }
 }
