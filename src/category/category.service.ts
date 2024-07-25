@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoryEntity } from './entities/categoty.entity';
 import { Repository } from 'typeorm';
@@ -10,21 +10,31 @@ export class CategoryService {
 
     constructor(
         @InjectRepository(CategoryEntity) private readonly categoryRepository: Repository<CategoryEntity>
-    ){};
+    ) { };
 
     async getAllCategories(): Promise<CategoryEntity[]> {
-        const categories = await this.categoryRepository.find();
+        try {
+            const categories = await this.categoryRepository.find();
 
-        if (!categories || categories.length === 0){
-            throw new NotFoundException('Categories empty');
+            if (!categories || categories.length === 0) {
+                throw new NotFoundException('Categories empty');
+            }
+
+            return categories;
+        } catch (error) {
+            throw new InternalServerErrorException(error);
         }
 
-        return categories;
     }
 
     async createCategory(createCategory: CreateCategoryDto): Promise<CategoryEntity> {
-        const category = await this.categoryRepository.save(createCategory);
+        try {
+            const category = await this.categoryRepository.save(createCategory);
 
-        return category;
+            return category;
+        } catch (error) {
+            throw new InternalServerErrorException(error);
+        }
+
     }
 }
