@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { UserEntity } from '../user/entities/user.entity';
 import { LoginDto } from './dtos/login.dto';
 import { UserService } from '../user/user.service';
@@ -17,19 +17,24 @@ export class AuthService {
     ) { }
 
     async login(loginDto: LoginDto): Promise<ReturnLoginDto> {
-        const user: UserEntity | undefined = await this.userService
-            .getUserByEmail(loginDto.email)
-            .catch(() => undefined);
+        try {
+            const user: UserEntity | undefined = await this.userService
+                .getUserByEmail(loginDto.email)
+                .catch(() => undefined);
 
-        const isMatch = await compare(loginDto.password, user?.password || '');
+            const isMatch = await compare(loginDto.password, user?.password || '');
 
-        if (!user || !isMatch) {
-            throw new NotFoundException(`E-mail or Password incorrect!`);
+            if (!user || !isMatch) {
+                throw new NotFoundException(`E-mail or Password incorrect!`);
+            }
+
+            return {
+                accessToken: await this.jwtService.sign({ ...new LoginPaylod(user) }),
+                user: new ReturnUserDto(user),
+            };
+        } catch (error) {
+           throw new InternalServerErrorException(error);
         }
 
-        return {
-            accessToken: await this.jwtService.sign({...new LoginPaylod(user)}),
-            user: new ReturnUserDto(user),
-        };
     }
 }
