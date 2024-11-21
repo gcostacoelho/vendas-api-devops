@@ -1,0 +1,31 @@
+services:
+  postgres-db:
+    container_name: postgres-container-vendas
+    image: postgres:17-alpine3.20
+    environment:
+      - POSTGRES_DB=vendas
+      - POSTGRES_USER=db-prod1
+      - POSTGRES_PASSWORD=vendasApiPass
+    networks:
+      - vendas-api
+
+  venda-app:
+    container_name: vendas-app-container
+    build:
+      context: ./
+      dockerfile: ./Dockerfile  
+    environment:
+      - DB_DATABASE=vendas
+      - DB_HOST=postgres-db
+      - DB_PASSWORD=vendasApiPass
+      - DB_PORT=5432
+      - DB_USERNAME=db-prod1
+    ports:
+      - 3000:3000
+    expose:
+      - 3000
+    networks:
+      - vendas-api
+
+networks:
+  vendas-api:

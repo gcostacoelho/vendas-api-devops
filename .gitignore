@@ -34,11 +34,7 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
-teste.json
-Dockerfile
-
 # env
 .env.development.local
 
 .vscode
-comando.txt
