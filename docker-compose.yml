@@ -6,6 +6,8 @@ services:
       - POSTGRES_DB=vendas
       - POSTGRES_USER=db-prod1
       - POSTGRES_PASSWORD=vendasApiPass
+    volumes:
+      - ./database/postgres-volume:/var/lib/postgresql/data
     networks:
       - vendas-api
 
@@ -24,6 +26,8 @@ services:
       - 3000:3000
     expose:
       - 3000
+    depends_on:
+     - postgres-db
     networks:
       - vendas-api
 
