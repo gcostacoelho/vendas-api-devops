@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+  labels:
+    app: postgres-deployment
+spec:
+  replicas: 3
+  template:
+    metadata:
+      name: postgres-db
+      labels:
+        app: postgres-db
+    spec:
+      containers:
+        - name: postgres-db
+          image: postgres:17-alpine3.20
+          volumeMounts:
+            - name: postgres-volume
+              mountPath: /var/lib/postgresql/data
+          envFrom:
+            - configMapRef:
+                name: postgres-config
+          ports:
+            - containerPort: 5432
+      volumes:
+        - name: postgres-volume
+          hostPath:
+            path: /C/Users/Gustavo/Documents/Projects/vendas-api-devops/volumes/postgres-volum-k8s
+            type: DirectoryOrCreate
+  selector:
+    matchLabels:
+       app: postgres-db
